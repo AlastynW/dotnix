@@ -15,7 +15,7 @@ in
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  # Enable home-manager for "vinetos" user
+  # Enable home-manager for "alastyn" user
   home-manager.users."alastyn" = {
     imports = [ (self + /configurations/home/alastyn.nix) ];
   };
