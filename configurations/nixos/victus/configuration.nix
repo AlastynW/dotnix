@@ -19,12 +19,12 @@
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
-  }
+  };
 
   networking = {
     hostName = "victus"; # Define your hostname.
     networkmanager.enable = true;
-  }
+  };
   
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

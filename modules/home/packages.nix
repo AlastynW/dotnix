@@ -47,7 +47,6 @@
     jetbrains.idea-ultimate
     jetbrains.pycharm-professional
     maven
-    neovim
     opentofu
     typst
     typst-live
