@@ -56,16 +56,13 @@
     python3
 
     # Productivity
+    brave
     flameshot
     xfce.thunar
-    (discord.override {
-      #withOpenASAR = true;
-      withVencord = true;
-    })
+    discord
     termius
 
     # Fun
-    spotify
     upscayl
   ];
 

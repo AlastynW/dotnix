@@ -33,7 +33,7 @@
     };
 
     # User config
-    userName = lib.mkDefault "Alastyn";
+    userName = lib.mkDefault "AlastynW";
     userEmail = lib.mkDefault ("q.rousseau123" + "@" + "gmail" + "." + "com");
 
     # Extra Config
