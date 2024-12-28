@@ -72,10 +72,24 @@
 
     # Modesetting is required.
     modesetting.enable = true;
+    powerManagement.enable = true;
+    powerManagement.finegrained = true;
+    open = true;
 
     # Enable the Nvidia settings menu,
 	# accessible via `nvidia-settings`.
     nvidiaSettings = true;
+
+    prime = {
+	offload = {
+		enable = true;
+		enableOffloadCmd = true;
+	};
+	reverseSync.enable = true;
+	allowExternalGpu = false;
+	nvidiaBusId = "PCI:1:0:0";
+	amdgpuBusId = "PCI:6:0:0";
+    };
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;

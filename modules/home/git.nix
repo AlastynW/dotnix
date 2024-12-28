@@ -26,12 +26,6 @@
       ".idea"
     ];
 
-    # Signing Module
-    signing = {
-      key = lib.mkDefault "7F6B8E5090D9C31D";
-      signByDefault = lib.mkDefault true;
-    };
-
     # User config
     userName = lib.mkDefault "AlastynW";
     userEmail = lib.mkDefault ("q.rousseau123" + "@" + "gmail" + "." + "com");
