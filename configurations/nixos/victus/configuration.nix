@@ -38,15 +38,9 @@
     variant = "azerty";
   };
 
-  # Configure console keymap
-  console.keyMap = "fr";
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -60,13 +54,23 @@
     #media-session.enable = true;
   };
 
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"];
+
+    # Enable PCSCD for smart card
+  services.pcscd.enable = true;
+
+  # Configure console keymap
+  console.keyMap = "fr";
+
+  # Enable sound with pipewire.
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
   };
-
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
 
@@ -112,9 +116,6 @@
     kitty
     librewolf
   ];
-
-    # Enable PCSCD for smart card
-  services.pcscd.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -1,10 +1,18 @@
-{ flake, ... }:
 {
+  # Import all your configuration modules here
   imports = [
-    flake.inputs.nixvim.homeManagerModules.nixvim
+    ./keymaps
+    ./lsp
+    ./plugins
+    ./treesitter
+    ./ui
+    ./alpha.nix
+    ./autocmds.nix
+    ./bufferline.nix
+    ./cmp.nix
+    ./colorscheme.nix
+    ./extra.nix
+    ./lualine.nix
+    ./options.nix
   ];
-
-  programs.nixvim = import ./nixvim.nix // {
-    enable = true;
-  };
 }
