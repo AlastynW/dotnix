@@ -34,11 +34,7 @@
     flake-parts,
     ...
   } @ inputs:
-  let inputs.nixos-unified.lib.mkFlake = {
-      inherit inputs;
-      root = ./.;
-    };
-  mkPkgs = system:
+  let mkPkgs = system:
       import nixpkgs {
         inherit system;
         config = {
