@@ -28,10 +28,63 @@
   };
 
   # Wired using https://nixos-unified.org/autowiring.html
-  outputs =
-    inputs:
-    inputs.nixos-unified.lib.mkFlake {
+  outputs = {
+    nixvim,
+    nixpkgs,
+    flake-parts,
+    ...
+  } @ inputs:
+  let inputs.nixos-unified.lib.mkFlake = {
       inherit inputs;
       root = ./.;
     };
+  mkPkgs = system:
+      import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+
+      imports = [
+        inputs.flake-parts.flakeModules.easyOverlay
+      ];
+
+      perSystem = {
+        system,
+        config,
+        ...
+      }: let
+        nixvimLib = nixvim.lib.${system};
+        nixvim' = nixvim.legacyPackages.${system};
+        nixvimModule = {
+          pkgs = mkPkgs system;
+          module = import ./config;
+          extraSpecialArgs = {
+          };
+        };
+        jeezyvim = nixvim'.makeNixvimWithModule nixvimModule;
+      in {
+        checks = {
+          default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+        };
+
+        packages = {
+          inherit jeezyvim;
+          default = jeezyvim;
+        };
+
+        overlayAttrs = {
+          inherit (config.packages) jeezyvim;
+        };
+      };
+   };
 }

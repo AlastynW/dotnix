@@ -88,5 +88,8 @@
     jq.enable = true;
     # Install btop https://github.com/aristocratos/btop
     btop.enable = true;
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
   };
 }
