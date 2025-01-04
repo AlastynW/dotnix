@@ -13,7 +13,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
-    hyprland.url = "github:hyprwm/Hyprland";
+
+    hyprland.url = "github:hyprwm/Hyprland/9f933da1c502989cadf7696971aa376d65847b95";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
     hy3 = {
       url = "github:outfoxxed/hy3";
