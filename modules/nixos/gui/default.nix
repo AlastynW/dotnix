@@ -19,7 +19,8 @@ in
   fonts = {
     packages = with pkgs; [
       meslo-lgs-nf
-      nerdfonts
+      nerd-fonts._0xproto
+      nerd-fonts.droid-sans-mono
     ];
     fontDir.enable = true;
   };

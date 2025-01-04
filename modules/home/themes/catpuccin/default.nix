@@ -11,7 +11,8 @@
 
   home.packages = with pkgs; [
     # Fonts
-    nerdfonts
+    nerd-fonts._0xproto
+    nerd-fonts.droid-sans-mono
     font-awesome
   ];
 }
