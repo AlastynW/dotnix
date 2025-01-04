@@ -22,6 +22,6 @@ in
   # TODO: Move this to be shared with other config
   users.users.alastyn = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" ];
   };
 }
