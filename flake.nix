@@ -14,6 +14,7 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
     hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
     hy3 = {
       url = "github:outfoxxed/hy3";
       inputs.hyprland.follows = "hyprland";
