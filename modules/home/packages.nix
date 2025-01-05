@@ -7,6 +7,7 @@
     # Unix tools
     ripgrep # Better `grep`
     fd
+    expat
     sd
     tree
     zip
@@ -59,10 +60,11 @@
     brave
     flameshot
     xfce.thunar
-    discord
+    vesktop
     termius
 
     # Fun
+    youtube-music
     upscayl
   ];
 
