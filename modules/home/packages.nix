@@ -37,7 +37,6 @@
     # Tools
     pavucontrol
     networkmanagerapplet
-    thunderbird
     blueberry
     yubikey-personalization
     #github-copilot-intellij-agent

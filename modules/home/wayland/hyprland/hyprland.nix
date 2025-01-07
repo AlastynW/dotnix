@@ -138,8 +138,8 @@ let
 
     # idle inhibit while watching videos
     windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$
-    windowrulev2 = idleinhibit focus, class:^(firefox)$, title:^(.*YouTube.*)$
-    windowrulev2 = idleinhibit fullscreen, class:^(firefox)$
+    windowrulev2 = idleinhibit focus, class:^(brave)$, title:^(.*YouTube.*)$
+    windowrulev2 = idleinhibit fullscreen, class:^(brave)$
   '';
 in
 {
