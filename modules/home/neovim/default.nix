@@ -7,6 +7,7 @@
 }:
 {
     programs.neovim = {
+	enable = true;
         viAlias = true;
         vimAlias = true;
         extraConfig = builtins.concatStringsSep "\n" [
@@ -50,7 +51,6 @@
           nodePackages.typescript-language-server
           gopls
           texlab
-          nodePackages.pyright
           rust-analyzer
         ];
     };
