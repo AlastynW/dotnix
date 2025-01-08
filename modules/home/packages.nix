@@ -42,7 +42,12 @@
     #github-copilot-intellij-agent
 
     # Dev
+    neovim
+    gcc
+    gnumake
+    clang-tools
     git-review
+    deno
     jdk21
     jetbrains.idea-ultimate
     jetbrains.pycharm-professional
