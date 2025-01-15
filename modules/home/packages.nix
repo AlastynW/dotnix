@@ -45,7 +45,11 @@
     neovim
     gcc
     gnumake
+    gdb
     clang-tools
+    autoconf
+    autotools-language-server
+    automake
     git-review
     deno
     jdk21
