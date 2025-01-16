@@ -5,6 +5,13 @@
     ...
 }:
 
+let
+  initdb = pkgs.writeShellScript "initdb" ''
+    if [ ! -d ${config.home.homeDirectory}/postgres_data ]; then
+      ${pkgs.postgresql}/bin/initdb --locale "$LANG" -E UTF-8
+    fi
+  '';
+in
 {
   systemd.user.services.initdb = {
     Unit = { Description = "initdb"; };
@@ -12,8 +19,7 @@
     Service = {
       Type = "oneshot";
       Environment = "PGDATA=${config.home.homeDirectory}/postgres_data";
-      ExecStart =
-        ''/run/current-system/sw/bin/initdb --locale "$LANG" -E UTF-8'';
+      ExecStart = "${initdb}";
       RemainAfterExit = "true";
     };
   };
@@ -29,7 +35,7 @@
       Type = "simple";
       Environment = "PGDATA=${config.home.homeDirectory}/postgres_data";
         ExecStart =
-          "/run/current-system/sw/bin/postgres -k /tmp";
+          "${pkgs.postgresql}/bin/postgres -k /tmp";
         Restart = "on-failure";
       };
     };
