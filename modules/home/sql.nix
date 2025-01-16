@@ -36,6 +36,6 @@
 
     home.sessionVariables = {
       PGHOST = "/tmp";
-      PGDATA=${config.home.homeDirectory}/postgres_data;
+      PGDATA = "${config.home.homeDirectory}/postgres_data";
     };
 }
