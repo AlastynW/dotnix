@@ -50,6 +50,8 @@
     autoconf
     autotools-language-server
     automake
+    postgresql_15
+    sqlfluff
     git-review
     deno
     jdk21

@@ -6,6 +6,8 @@
       enable = true;
       initExtra = ''
         # Custom bash profile goes here
+        export PGDATA="$HOME/postgres_data"
+        export PGHOST="/tmp"
       '';
     };
 
