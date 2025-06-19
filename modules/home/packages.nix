@@ -62,6 +62,7 @@
     jdk21
     jetbrains.idea-ultimate
     jetbrains.pycharm-professional
+    jetbrains-toolbox
     maven
     opentofu
     typst
