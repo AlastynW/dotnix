@@ -46,7 +46,8 @@
     yaml-cpp
     nodejs_23
     rustup
-    neovim
+    # neovim est fourni par NixVim (voir modules/home/neovim/), on ne
+    # veut pas d'un second binaire nvim "nu" en conflit dans le PATH.
     gcc
     gnumake
     cmake
@@ -92,7 +93,7 @@
     # enable scrolling in git diff
     DELTA_PAGER = "less -R";
 
-    EDITOR = "vim";
+    EDITOR = "nvim";
     MANPAGER = "sh -c 'col -bx | bat -l man -p'";
   };
 
