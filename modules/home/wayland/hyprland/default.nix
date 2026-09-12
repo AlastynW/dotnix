@@ -11,7 +11,15 @@ let
 in
 let
   cursor = "Bibata-Modern-Classic-Hyprcursor";
-  cursorPackage = self.packages.${pkgs.hostPlatform.system}.bibata-hyprcursor;
+  cursorPackage = self.packages.${pkgs.stdenv.hostPlatform.system}.bibata-hyprcursor;
+
+  # Même correctif que modules/nixos/gui/hyprland.nix : le flake Hyprland
+  # construit ses packages avec sa propre instance de pkgs, donc l'overlay
+  # wayland-protocols de notre `pkgs` ne l'atteint pas sans `.override`.
+  system = pkgs.stdenv.hostPlatform.system;
+  hyprlandPkg = flake.inputs.hyprland.packages.${system}.hyprland.override {
+    wayland-protocols = pkgs.wayland-protocols;
+  };
 in
 {
   imports = [
@@ -36,6 +44,11 @@ in
       name = "Flat-Remix-GTK-Grey-Darkest";
     };
 
+    # 26.05 : le défaut de gtk.gtk4.theme est passé de config.gtk.theme à
+    # null. On fixe explicitement l'ancien comportement (thème GTK3 aussi
+    # appliqué aux apps GTK4) plutôt que de dépendre de home.stateVersion.
+    gtk4.theme = config.gtk.theme;
+
     iconTheme = {
       package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
@@ -55,8 +68,15 @@ in
   # enable hyprland
   wayland.windowManager.hyprland = {
     enable = true;
-    package = flake.inputs.hyprland.packages.${pkgs.hostPlatform.system}.hyprland;
+    package = hyprlandPkg;
     systemd.variables = [ "--all" ];
-    plugins = [ flake.inputs.hy3.packages.${pkgs.hostPlatform.system}.hy3 ];
+    plugins = [
+      (flake.inputs.hy3.packages.${system}.hy3.override { hyprland = hyprlandPkg; })
+    ];
+
+    # 26.05 : le défaut est passé de "hyprlang" à "lua". Tout ce dépôt
+    # (extraConfig, settings.*) est écrit en syntaxe hyprlang classique ;
+    # basculer en Lua casserait tout ce qui suit. On fixe explicitement.
+    configType = "hyprlang";
   };
 }

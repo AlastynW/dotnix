@@ -16,8 +16,8 @@
     "$gradient_angle" = "45deg";
     "$active_border_col_1" = "0xFFB4A1DB";
     "$active_border_col_2" = "0xFFD04E9D";
-    "$inactive_border_col_1" = "1e2030";
-    "$inactive_border_col_2" = "1e2030";
+    "$inactive_border_col_1" = "0xFF1e2030";
+    "$inactive_border_col_2" = "0xFF1e2030";
     "$active_shadow_col" = "0x66000000";
     "$inactive_shadow_col" = "0x66000000";
     "$group_border_col" = "0xFFDB695B";
@@ -26,7 +26,6 @@
     # General
     general = {
       border_size = "$hypr_border_size";
-      no_border_on_floating = false;
       gaps_in = "$hypr_gaps_in";
       gaps_out = "$hypr_gaps_out";
       "col.active_border" = "$active_border_col_1 $active_border_col_2 $gradient_angle";

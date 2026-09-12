@@ -11,13 +11,13 @@ let
 
   # Packages
   amixer = "${pkgs.alsa-utils}/bin/amixer"; # alsa-utils expose multiple binaries
+  brightnessctl = "${lib.getExe pkgs.brightnessctl}"; # remplace `light`, retiré de nixpkgs (26.05)
   cliphist = "${lib.getExe pkgs.cliphist}";
   grim = "${lib.getExe pkgs.grim}";
   kitty = "${lib.getExe pkgs.kitty}";
-  light = "${lib.getExe pkgs.light}";
   notify-send = "${lib.getExe pkgs.libnotify}";
   playerctl = "${lib.getExe pkgs.playerctl}";
-  rofi = "${lib.getExe pkgs.rofi-wayland}";
+  rofi = "${lib.getExe pkgs.rofi}"; # rofi-wayland a été fusionné dans rofi (26.05)
   slurp = "${lib.getExe pkgs.slurp}";
   swaylock-effects = "${lib.getExe pkgs.swaylock-effects}";
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy"; # wl-clipboard expose multiple binaries
@@ -45,8 +45,10 @@ let
       bind = , PRINT, exec, ${screenshot}
       bind = $mainMod SHIFT, S, exec, ${screenshot}
 
-      binde = , XF86MonBrightnessDown, exec, ${light} -U 5
-      binde = , XF86MonBrightnessUp, exec, ${light} -A 5
+      binde = , XF86MonBrightnessDown, exec, ${brightnessctl} set 5%-
+      binde = , XF86MonBrightnessUp, exec, ${brightnessctl} set 5%+
+      binde = , Scroll_Lock, exec, ${brightnessctl} set 5%-
+      binde = , Pause, exec, ${brightnessctl} set 5%+
 
       binde = , XF86AudioRaiseVolume, exec, ${alsa} 1%+
       binde = , XF86AudioLowerVolume, exec, ${alsa} 1%-
@@ -137,9 +139,9 @@ let
     }
 
     # idle inhibit while watching videos
-    windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$
-    windowrulev2 = idleinhibit focus, class:^(brave)$, title:^(.*YouTube.*)$
-    windowrulev2 = idleinhibit fullscreen, class:^(brave)$
+    windowrule = idle_inhibit focus, match:class ^(mpv|.+exe)$
+    windowrule = idle_inhibit focus, match:class ^(brave)$, match:title ^(.*YouTube.*)$
+    windowrule = idle_inhibit fullscreen, match:class ^(brave)$
   '';
 in
 {
@@ -174,6 +176,10 @@ in
         name = "logitech-usb-receiver-keyboard";
         kb_layout = "fr";
         kb_variant = "";
+      }
+      {
+        name = "nuphy-nuphy-halo96-v2-keyboard";
+        kb_options = "altwin:swap_alt_win";
       }
     ];
   };

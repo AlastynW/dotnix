@@ -59,18 +59,6 @@ in
 
   clipboard.register = "unnamedplus";
 
-  # vim.filetype.add({...}) — pas d'option déclarative dédiée, extraConfigLua.
-  extraConfigLua = ''
-    vim.filetype.add({
-      extension = {
-        mdx = "markdown",
-        vhd = "vhdl",
-        vhdl = "vhdl",
-        cu = "c",
-      },
-    })
-  '';
-
   # ===========================================================================
   # Autocommandes (core/autocmd.lua + bouts de core/settings.lua)
   # ===========================================================================
@@ -709,28 +697,32 @@ in
     # -- lua/plugins/init.lua : nvim-tree --
     nvim-tree = {
       enable = true;
-      filters = {
-        dotfiles = false;
-        gitClean = false;
-        noBuffer = false;
-        custom = [
-          "node_modules"
-          "^.git$"
-          "dist"
-        ];
+      # filters.* et onAttach vivent maintenant sous settings.* (le module
+      # nixvim mappe désormais 1:1 sur les clés lua de nvim-tree.setup()).
+      settings = {
+        filters = {
+          dotfiles = false;
+          git_clean = false;
+          no_buffer = false;
+          custom = [
+            "node_modules"
+            "^.git$"
+            "dist"
+          ];
+        };
+        on_attach = mkRaw ''
+          function(bufnr)
+            local api = require("nvim-tree.api")
+            api.config.mappings.default_on_attach(bufnr)
+            vim.keymap.set("n", "<C-e>", api.tree.close, {
+              buffer = bufnr,
+              noremap = true,
+              silent = true,
+              desc = "Close NvimTree",
+            })
+          end
+        '';
       };
-      onAttach = mkRaw ''
-        function(bufnr)
-          local api = require("nvim-tree.api")
-          api.config.mappings.default_on_attach(bufnr)
-          vim.keymap.set("n", "<C-e>", api.tree.close, {
-            buffer = bufnr,
-            noremap = true,
-            silent = true,
-            desc = "Close NvimTree",
-          })
-        end
-      '';
     };
 
     # -- lua/plugins/bufferline.lua --
@@ -884,13 +876,11 @@ in
     };
 
     # -- lua/plugins/dap.lua --
-    dap = {
-      enable = true;
-      extensions = {
-        dap-ui.enable = true;
-        dap-virtual-text.enable = true;
-      };
-    };
+    dap.enable = true;
+    # dap-ui/dap-virtual-text sont maintenant des modules plugins.* à part
+    # entière (plugins.dap.extensions.* est renommé).
+    dap-ui.enable = true;
+    dap-virtual-text.enable = true;
 
     # -- lua/plugins/dev.lua --
     todo-comments = {
@@ -1113,8 +1103,8 @@ in
       src = pkgs.fetchFromGitHub {
         owner = "chomosuke";
         repo = "typst-preview.nvim";
-        rev = "main"; # épingler un commit précis en prod
-        hash = lib.fakeHash; # `nix build` donnera le vrai hash à coller ici
+        rev = "master"; # branche par défaut réelle (vérifié), à épingler sur un commit précis en prod
+        hash = "sha256-UTugVfydwGTmf5RomQ0R72Yf6fSz8gGeY/fg51qW454="; # obtenu via l'erreur de hash mismatch
       };
     })
     (pkgs.vimUtils.buildVimPlugin {
@@ -1123,8 +1113,8 @@ in
       src = pkgs.fetchFromGitHub {
         owner = "Fymyte";
         repo = "hept.vim";
-        rev = "main"; # idem
-        hash = lib.fakeHash;
+        rev = "master"; # idem, branche par défaut réelle
+        hash = "sha256-flJKnjp8YEhvFlbYZXb/InxdM6ZDV9+ZxvJvmNjPP8U=";
       };
     })
     # peek.nvim (preview markdown) nécessite `deno task build:fast` au build.
@@ -1133,7 +1123,19 @@ in
     # Alternative plus simple à déclarer : pkgs.vimPlugins.markdown-preview-nvim.
   ];
 
+  # Un seul extraConfigLua : Nix rejette deux définitions du même attribut,
+  # donc tout le Lua "libre" (vim.filetype.add + setup des plugins ajoutés
+  # via extraPlugins) est regroupé ici.
   extraConfigLua = ''
+    vim.filetype.add({
+      extension = {
+        mdx = "markdown",
+        vhd = "vhdl",
+        vhdl = "vhdl",
+        cu = "c",
+      },
+    })
+
     -- typst-preview.nvim (lazy=false, opts={})
     require("typst-preview").setup({})
   '';

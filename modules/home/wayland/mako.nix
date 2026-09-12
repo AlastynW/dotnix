@@ -11,16 +11,20 @@ in
   services.mako = {
     enable = true;
 
-    sort = "-time";
-    layer = "top";
-    backgroundColor = xcolors.background + "EF"; # Add opacity
-    textColor = xcolors.selection-foreground;
-    margin = toString 0;
-    padding = toString 16;
-    borderSize = 0;
-    borderRadius = 12;
-    icons = true;
-    defaultTimeout = 30 * 1000; # 30s
+    # 26.05 : toutes ces clés sont passées sous settings.* (en kebab-case,
+    # reflet direct des clés de mako.conf) plutôt qu'au niveau racine.
+    settings = {
+      sort = "-time";
+      layer = "top";
+      background-color = xcolors.background + "EF"; # Add opacity
+      text-color = xcolors.selection-foreground;
+      margin = toString 0;
+      padding = toString 16;
+      border-size = 0;
+      border-radius = 12;
+      icons = true;
+      default-timeout = 30 * 1000; # 30s
+    };
 
     extraConfig = ''
       text-alignment=center

@@ -26,5 +26,4 @@ in
     extraGroups = [ "wheel" "networkmanager" "docker"];
   };
 
-  nixpkgs.config.allowUnfree = true;
 }

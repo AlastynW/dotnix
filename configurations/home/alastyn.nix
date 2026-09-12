@@ -1,6 +1,5 @@
 {
   flake,
-  pkgs,
   lib,
   ...
 }:
@@ -15,7 +14,7 @@ in
 
   home = {
     username = "alastyn";
-    homeDirectory = lib.mkDefault "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/alastyn";
+    homeDirectory = lib.mkDefault "/home/alastyn";
     stateVersion = "24.11";
   };
 }

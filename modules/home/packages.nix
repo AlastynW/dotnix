@@ -17,7 +17,7 @@
 
     # utils
     file
-    du-dust
+    dust # anciennement du-dust, renommé en 26.05
     duf
     fd
 
@@ -37,52 +37,33 @@
     # Tools
     pavucontrol
     networkmanagerapplet
-    blueberry
+    blueman
     yubikey-personalization
     #github-copilot-intellij-agent
 
     # Dev
     docker
-    yaml-cpp
-    nodejs_23
-    rustup
     # neovim est fourni par NixVim (voir modules/home/neovim/), on ne
     # veut pas d'un second binaire nvim "nu" en conflit dans le PATH.
     gcc
-    gnumake
-    cmake
-    clang-tools
-    gdb
-    autoconf
-    autotools-language-server
-    automake
-    postgresql_15
     sqlfluff
     git-review
     deno
     jdk21
-    jetbrains.idea-ultimate
-    jetbrains.pycharm-professional
-    jetbrains-toolbox
     maven
     opentofu
     typst
     typst-live
-    onlyoffice-bin
+    onlyoffice-desktopeditors
     packer
-    poetry
-    python3
     vscode
 
     # Productivity
     brave
     flameshot
-    xfce.thunar
+    thunar # anciennement xfce.thunar, déplacé au niveau racine (26.05)
     discord
     termius
-
-    # Fun
-    upscayl
   ];
 
   # add environment variables

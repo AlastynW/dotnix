@@ -3,6 +3,15 @@
 let
   inherit (flake) inputs;
   inherit (inputs) self;
+  system = pkgs.stdenv.hostPlatform.system;
+  hyprlandPackages = inputs.hyprland.packages.${system};
+
+  # Hyprland v0.56.0 exige wayland-protocols >= 1.49 (voir
+  # overlays/wayland-protocols.nix), mais le flake Hyprland construit ses
+  # packages avec sa PROPRE instance de pkgs (pkgsFor dans son flake.nix),
+  # donc notre overlay sur `pkgs` ne l'atteint jamais : il faut ré-injecter
+  # le correctif ici via `.override`.
+  hyprland = hyprlandPackages.hyprland.override { wayland-protocols = pkgs.wayland-protocols; };
 in
 {
 
@@ -17,13 +26,16 @@ in
   programs.hyprland = {
     enable = true;
     # set the flake package
-    package = inputs.hyprland.packages.${pkgs.hostPlatform.system}.hyprland;
+    package = hyprland;
     # make sure to also set the portal package, so that they are in sync
-    portalPackage = inputs.hyprland.packages.${pkgs.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    portalPackage = hyprlandPackages.xdg-desktop-portal-hyprland.override {
+      inherit hyprland;
+      wayland-protocols = pkgs.wayland-protocols;
+    };
   };
   # add hyprland to display manager sessions
   services.displayManager.sessionPackages = [
-    inputs.hyprland.packages.${pkgs.hostPlatform.system}.default
+    hyprland
   ];
   security.pam.services.swaylock = { };
 
@@ -34,6 +46,6 @@ in
 
   # Fix mesa missmatch preventing Hyprland to start
   hardware.graphics.package =
-    inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.hostPlatform.system}.mesa.drivers;
+    inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.mesa;
 
 }

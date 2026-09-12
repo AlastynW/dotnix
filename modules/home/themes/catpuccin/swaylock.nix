@@ -6,10 +6,15 @@
   ...
 }:
 let
-  wallpaper = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/Vinetos/dotnix/refs/heads/main/modules/home/themes/catpuccin/backgrounds/deer.jpg";
-    sha256 = "1494bkhakk72xk8hcy1mw7b1m6rr4bda3aspblz6ml6325fx796x";
-  };
+  # L'ancienne image venait de builtins.fetchurl sur le dépôt d'origine
+  # (Vinetos/dotnix) : le fichier n'y existe plus (404), et dépendre d'un
+  # repo GitHub tiers pour un simple fond d'écran est fragile de toute façon.
+  # À la place : committez votre propre image dans ce dépôt, à l'emplacement
+  # ci-dessous (n'importe quel .jpg/.png fait l'affaire, renommez si besoin).
+  #
+  #   modules/home/themes/catpuccin/backgrounds/deer.jpg
+  #
+  wallpaper = ./backgrounds/deer.jpg;
 in
 {
   programs.swaylock = {

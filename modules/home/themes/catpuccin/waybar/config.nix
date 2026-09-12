@@ -19,7 +19,6 @@
       modules-left = [
         "custom/launcher"
         "hyprland/workspaces"
-        "custom/swap"
         "tray"
         "hyprland/submap"
         "custom/cava-internal"
@@ -59,12 +58,6 @@
           focused = "";
           default = "";
         };
-      };
-
-      "custom/swap" = {
-        on-click = "";
-        tooltip = "Swap between waybar configs";
-        format = "Bg  ";
       };
 
       "custom/cava-internal" = {
@@ -180,7 +173,14 @@
 
       "custom/power" = {
         format = "⏻";
-        on-click = ""; # TODO: https://github.com/yurihikari/garuda-sway-config/blob/b8200b562c1ce23731261401f1352d912281cf30/hypr/scripts/rofi_powermenu
+        on-click = ''
+          case "$(printf 'Lock\nLogout\nReboot\nShutdown' | ${lib.getExe pkgs.rofi} -dmenu -p Power)" in
+            Lock) ${lib.getExe pkgs.swaylock-effects} -S ;;
+            Logout) ${pkgs.hyprland}/bin/hyprctl dispatch exit ;;
+            Reboot) systemctl reboot ;;
+            Shutdown) systemctl poweroff ;;
+          esac
+        '';
         tooltip = false;
       };
 
@@ -190,7 +190,7 @@
 
       "custom/launcher" = {
         format = " ";
-        on-click = ""; # TODO: https://github.com/yurihikari/garuda-sway-config/blob/b8200b562c1ce23731261401f1352d912281cf30/hypr/scripts/rofi_launcher
+        on-click = "${lib.getExe pkgs.rofi} -modi drun -show drun -show-icons";
         tooltip = false;
       };
     };

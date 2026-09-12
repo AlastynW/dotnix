@@ -19,7 +19,10 @@ in
   fonts = {
     packages = with pkgs; [
       meslo-lgs-nf
-      nerdfonts
+      # `nerdfonts` (méta-paquet) retiré de nixpkgs : Nerd Fonts v3 a scindé
+      # chaque police séparément sous nerd-fonts.<nom>. Hack Nerd Font est
+      # mentionnée dans modules/home/themes/catpuccin/waybar/style.css.
+      nerd-fonts.hack
     ];
     fontDir.enable = true;
   };
@@ -30,10 +33,16 @@ in
   # enable location service
   location.provider = "geoclue2";
 
+  # Contrôle de la luminosité (remplace `programs.light`, retiré de nixpkgs
+  # en 26.05 car `light` n'est plus maintenu upstream). Le module
+  # `hardware.brightnessctl` a lui aussi été supprimé entre-temps : les
+  # versions récentes de brightnessctl passent par l'API systemd-logind et
+  # n'ont plus besoin de règles udev, il suffit d'installer le paquet.
+  environment.systemPackages = [ pkgs.brightnessctl ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs = {
-    light.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;

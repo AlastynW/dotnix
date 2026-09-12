@@ -6,8 +6,6 @@
       enable = true;
       initExtra = ''
         # Custom bash profile goes here
-        export PGDATA="$HOME/postgres_data"
-        export PGHOST="/tmp"
         alias clangf='find $(git rev-parse --show-toplevel) -name "*.h" -o -name "*.c" -o -name "*.hh" -o -name "*.cc" -o -name "*.cpp" -o -name "*.hxx" -o -name "*.cxx" -o -name "*.hpp"  | xargs clang-format -i'
       '';
     };

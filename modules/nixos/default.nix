@@ -38,14 +38,34 @@ in
     };
   };
 
+  # Autorise les paquets non-libres (nvidia, vscode, discord, brave, ...) sur
+  # les deux hôtes -- avant ceci n'était réglé que sur victus, donc raspberry
+  # aurait échoué à builder le même profil home-manager (vscode/discord/...).
+  nixpkgs.config.allowUnfree = true;
+
   # These users can add Nix caches.
   nix.settings.trusted-users = [
     "root"
     "@wheel"
   ];
 
+  # Corrige ponctuellement wayland-protocols (trop ancien dans notre
+  # nixpkgs release-26.05 pour Hyprland v0.56.0) sans faire suivre tout
+  # Hyprland sur un autre nixpkgs — voir overlays/wayland-protocols.nix et
+  # le commentaire sur l'input hyprland dans flake.nix.
+  nixpkgs.overlays = [
+    self.overlays.wayland-protocols
+    self.overlays.linux-firmware-pin
+  ];
+
   # Enable the OpenSSH service on every NixOS
   services.openssh.enable = true;
   # Enable the fwupd service on every NixOS
   services.fwupd.enable = true;
+
+  # Filet de sécurité mémoire : swap configuré par machine (voir
+  # configuration.nix de chaque hôte), pas ici, car la bonne solution dépend
+  # du support de stockage : swapfile disque sur victus (NVMe, largement
+  # assez de place), zram sur raspberry (carte SD -> éviter l'usure d'un
+  # swapfile permanent).
 }

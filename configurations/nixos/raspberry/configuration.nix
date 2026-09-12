@@ -82,6 +82,13 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # zram : swap compressé en RAM plutôt qu'un swapfile sur la carte SD, qui
+  # userait la flash prématurément avec des écritures permanentes.
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+
   # Raspberrry does not handle suspend, resulting in hard-reboot to access it again
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
