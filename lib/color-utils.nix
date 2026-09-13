@@ -1,4 +1,8 @@
 # https://github.com/fufexan/dotfiles/blob/main/lib/colors
+#
+# Fonctions génériques de manipulation de couleurs hexa (pas de palette ici :
+# la palette réelle utilisée par l'OS est dans lib/theme/colors.nix, montée
+# via lib/theme/default.nix).
 { lib, ... }:
 
 with lib;

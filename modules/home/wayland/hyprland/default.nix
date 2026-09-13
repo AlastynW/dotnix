@@ -24,7 +24,8 @@ in
 {
   imports = [
     ./hyprpaper.nix
-    ./hyprland.nix
+    ./keybinds.nix
+    ./settings.nix
   ];
 
   xdg.dataFile."icons/${cursor}".source = "${cursorPackage}/share/icons/${cursor}";

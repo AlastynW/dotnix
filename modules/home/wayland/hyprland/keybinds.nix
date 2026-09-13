@@ -1,42 +1,22 @@
+# Raccourcis clavier bruts (extraConfig, syntaxe hyprlang). `$mainMod` ci-dessous
+# est du texte littéral interprété côté Hyprland (variable définie dans
+# settings.nix via `"$mainMod" = mainMod;`), pas de l'interpolation nix.
 {
-  lib,
-  config,
   pkgs,
-  default,
+  lib,
   ...
 }:
 let
   # TODO: Rewrite this file to use nix language now that hyprland HM module update is merged.
-  mainMod = "SUPER";
-
-  # Packages
-  amixer = "${pkgs.alsa-utils}/bin/amixer"; # alsa-utils expose multiple binaries
-  brightnessctl = "${lib.getExe pkgs.brightnessctl}"; # remplace `light`, retiré de nixpkgs (26.05)
-  cliphist = "${lib.getExe pkgs.cliphist}";
-  grim = "${lib.getExe pkgs.grim}";
-  kitty = "${lib.getExe pkgs.kitty}";
-  notify-send = "${lib.getExe pkgs.libnotify}";
-  playerctl = "${lib.getExe pkgs.playerctl}";
-  rofi = "${lib.getExe pkgs.rofi}"; # rofi-wayland a été fusionné dans rofi (26.05)
-  slurp = "${lib.getExe pkgs.slurp}";
-  swaylock-effects = "${lib.getExe pkgs.swaylock-effects}";
-  wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy"; # wl-clipboard expose multiple binaries
-  wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
-  wtype = "${lib.getExe pkgs.wtype}"; # Allow pasting to gui application by simulating keyboard inputs
-
-  # Shortcuts
-  clipboard = {
-    paste = "${cliphist} list | ${rofi} -dmenu -theme /etc/nixos/modules/home/rofi/clipboard/config.rasi | ${cliphist} decode | ${wl-copy} && ${wtype} -M ctrl v -m ctrl";
-    wipe = "${cliphist} wipe && ${notify-send} \"Cleared clipboard\"";
-  };
+  exe = import ./exe-paths.nix { inherit pkgs lib; };
 
   applicationsShortcuts =
     let
-      term = "${kitty}";
-      dmenu = "${rofi} -modi drun -show drun -show-icons";
-      swaylock = "${swaylock-effects} -S";
-      screenshot = "${grim} -g \"$(${slurp})\" - | ${wl-copy}";
-      alsa = "${amixer} -q sset Master";
+      term = exe.kitty;
+      dmenu = "${exe.rofi} -modi drun -show drun -show-icons";
+      swaylock = "${exe.swaylock-effects} -S";
+      screenshot = "${exe.grim} -g \"$(${exe.slurp})\" - | ${exe.wl-copy}";
+      alsa = "${exe.amixer} -q sset Master";
     in
     ''
       bind = $mainMod, Return, exec, ${term}
@@ -45,19 +25,19 @@ let
       bind = , PRINT, exec, ${screenshot}
       bind = $mainMod SHIFT, S, exec, ${screenshot}
 
-      binde = , XF86MonBrightnessDown, exec, ${brightnessctl} set 5%-
-      binde = , XF86MonBrightnessUp, exec, ${brightnessctl} set 5%+
-      binde = , Scroll_Lock, exec, ${brightnessctl} set 5%-
-      binde = , Pause, exec, ${brightnessctl} set 5%+
+      binde = , XF86MonBrightnessDown, exec, ${exe.brightnessctl} set 5%-
+      binde = , XF86MonBrightnessUp, exec, ${exe.brightnessctl} set 5%+
+      binde = , Scroll_Lock, exec, ${exe.brightnessctl} set 5%-
+      binde = , Pause, exec, ${exe.brightnessctl} set 5%+
 
       binde = , XF86AudioRaiseVolume, exec, ${alsa} 1%+
       binde = , XF86AudioLowerVolume, exec, ${alsa} 1%-
       bindl = , XF86AudioMute, exec, ${alsa} toggle
 
-      bindl = , XF86AudioPlay, exec, ${playerctl} play-pause
-      bindl = , XF86AudioPause, exec, ${playerctl} play-pause
-      bindl = , XF86AudioNext, exec, ${playerctl} next
-      bindl = , XF86AudioPrev, exec, ${playerctl} previous
+      bindl = , XF86AudioPlay, exec, ${exe.playerctl} play-pause
+      bindl = , XF86AudioPause, exec, ${exe.playerctl} play-pause
+      bindl = , XF86AudioNext, exec, ${exe.playerctl} next
+      bindl = , XF86AudioPrev, exec, ${exe.playerctl} previous
 
     '';
 
@@ -151,36 +131,4 @@ in
     ${applicationsShortcuts}
     ${general}
   '';
-
-  wayland.windowManager.hyprland.settings = {
-    "$mainMod" = mainMod;
-    general = {
-      layout = "hy3";
-    };
-    # Exec configuration
-    exec-once = [
-      "${wl-paste} --type text --watch ${cliphist} store" # cliphist retains only text inputs
-    ];
-    bind = [
-      # Clipboard
-      "CTRL SHIFT, V, exec, ${clipboard.paste}"
-      "$mainMod SHIFT, V, exec, ${clipboard.wipe}"
-    ];
-    device = [
-      {
-        name = "g915-keyboard-keyboard";
-        kb_layout = "fr";
-        kb_variant = "";
-      }
-      {
-        name = "logitech-usb-receiver-keyboard";
-        kb_layout = "fr";
-        kb_variant = "";
-      }
-      {
-        name = "nuphy-nuphy-halo96-v2-keyboard";
-        kb_options = "altwin:swap_alt_win";
-      }
-    ];
-  };
 }

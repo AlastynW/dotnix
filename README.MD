@@ -1,19 +1,19 @@
-# Vinetos Nix* Configurations
+# Alastyn Nix* Configurations
 
-This repository contains all my configurations for all my nix-based systems.
+This repository contains all my (Alastyn's) configurations for all my nix-based systems.
 It includes NixOS systems configurations, Nix configurations and nix-darwin configurations with per-user configurations,
 and per-host configurations.
 This repository is built on top of Nix Flakes and [nixos-unified](https://github.com/srid/nixos-unified).
+
+It is based on [Vinetos' `dotnix`](https://github.com/Vinetos/dotnix), which this repo was forked from, then adapted
+to my own hosts, packages and workflow.
 
 This config allow me to have per-machine configuration (e.g. modules, hardware specific) AND per-user per-machine
 configuration (e.g. profiles, workspaces, ...).
 
 I use this repository to manage my personal computers, servers, and workstations including :
 
-- Laptops with NixOS and MacOS + Nix-Darwin
-- Desktop with NixOS
-- WSL2 with NixOS and Ubuntu
-- Servers with NixOS and Debian + Nix
+- Laptop with NixOS (victus)
 - Raspberry Pi with NixOS
 
 # What's inside
@@ -24,8 +24,8 @@ Some of the noticeable things I use :
 - Nixos-unified (flake-parts module) to provide a consistent interface for all my configurations
 - Home-manager for per-user configuration
 - Wayland (Hyprland, Hyprpaper, ...)
-- DoAs (alternative to sudo)
-- Kitty terminal, Fish as shell
+- NixVim for a fully declarative Neovim configuration
+- Kitty terminal, Zsh as shell
 
 ## Architecture
 
@@ -44,6 +44,23 @@ the module system.
 | `./modules/{nixos,darwin,home,flake-parts}/foo/` | `{nixos,darwin,home,flake}Modules.foo`  |
 | `./overlays/foo.nix`                             | `overlays.foo`                          |
 | `./packages/bar`                                 | ``                     |
+
+### Splitting large modules
+
+Modules that would otherwise grow into a single file of several hundred lines are split into a subfolder instead: a
+`default.nix` that `imports` a handful of fragments, each fragment only defining the keys it's responsible for
+(merged the same way any other `imports` would be). For example:
+
+- `modules/home/neovim/nixvim/` — the NixVim configuration, split by domain (`options.nix`, `autocmds.nix`,
+  `keymaps.nix`, `diagnostics.nix`, `extra.nix`, and one file per group of plugins under `plugins/`).
+- `modules/home/themes/catpuccin/waybar/config/` — waybar modules grouped by usage (workspaces, system stats,
+  clock/power).
+- `modules/home/wayland/hyprland/` — `exe-paths.nix` centralizes binary paths, `keybinds.nix` holds the raw
+  keybinds, `settings.nix` holds the structured Hyprland settings.
+
+`lib/color-utils.nix` (generic hex/rgba color helpers, unrelated to any specific theme) is kept separate from
+`lib/theme/colors.nix` (the actual Catppuccin palette used by the desktop) ; both are wired together in
+`lib/theme/default.nix`.
 
 ## How to use
 
@@ -73,7 +90,3 @@ the module system.
   ```
 - To autoformat the project tree using nixpkgs-fmt, run `nix fmt`.
 - To build all flake outputs (locally or in CI), run `nix --accept-flake-config run github:juspay/omnix ci build`
-
-
-
-

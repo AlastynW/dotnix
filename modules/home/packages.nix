@@ -19,16 +19,12 @@
     file
     dust # anciennement du-dust, renommé en 26.05
     duf
-    fd
 
     # Nix dev
     cachix
     nil # Nix language server
     nix-info
     nixpkgs-fmt
-
-    # Dev
-    tmate
 
     # On ubuntu, we need this less for `man home-configuration.nix`'s pager to
     # work.
@@ -42,6 +38,7 @@
     #github-copilot-intellij-agent
 
     # Dev
+    tmate
     docker
     # neovim est fourni par NixVim (voir modules/home/neovim/), on ne
     # veut pas d'un second binaire nvim "nu" en conflit dans le PATH.

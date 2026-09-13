@@ -43,6 +43,12 @@ in
   # aurait échoué à builder le même profil home-manager (vscode/discord/...).
   nixpkgs.config.allowUnfree = true;
 
+  # nixpkgs.config.allowUnfree ne s'applique qu'aux évaluations passant par
+  # la config système/flake (nixos-rebuild, home-manager, etc.). `nix-shell`
+  # classique évalue nixpkgs séparément et l'ignore -- il faut donc aussi
+  # cette variable d'env pour que `nix-shell -p <paquet-non-libre>` marche.
+  environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
+
   # These users can add Nix caches.
   nix.settings.trusted-users = [
     "root"
