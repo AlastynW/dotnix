@@ -72,6 +72,13 @@ in
     upower.enable = true;
 
     flatpak.enable = true;
+
+    # Démon de (dé)montage des disques : udiskie (voir modules/home/udiskie.nix)
+    # s'appuie dessus via D-Bus pour monter automatiquement les clés USB /
+    # disques externes branchés. La règle polkit par défaut d'udisks2 autorise
+    # déjà l'utilisateur de la session active à monter les médias amovibles
+    # sans mot de passe, donc aucune règle supplémentaire n'est nécessaire ici.
+    udisks2.enable = true;
   };
 
   services.pipewire.wireplumber.extraConfig = lib.mkIf (config.hardware.bluetooth.enable) {
