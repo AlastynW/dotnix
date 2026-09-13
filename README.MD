@@ -1,8 +1,7 @@
 # Alastyn Nix* Configurations
 
 This repository contains all my (Alastyn's) configurations for all my nix-based systems.
-It includes NixOS systems configurations, Nix configurations and nix-darwin configurations with per-user configurations,
-and per-host configurations.
+It includes NixOS systems configurations with per-user configurations, and per-host configurations.
 This repository is built on top of Nix Flakes and [nixos-unified](https://github.com/srid/nixos-unified).
 
 It is based on [Vinetos' `dotnix`](https://github.com/Vinetos/dotnix), which this repo was forked from, then adapted
@@ -38,12 +37,12 @@ the module system.
 > This repo use [autowiring](https://nixos-unified.org/autowiring.html) of flake outputs based on this directory
 > structure.
 
-| Path                                             | Corresponding flake output              |
-|--------------------------------------------------|-----------------------------------------|
-| `./configurations/{nixos,darwin,home}/foo/`      | `{nixos,darwin,home}Configurations.foo` |
-| `./modules/{nixos,darwin,home,flake-parts}/foo/` | `{nixos,darwin,home,flake}Modules.foo`  |
-| `./overlays/foo.nix`                             | `overlays.foo`                          |
-| `./packages/bar`                                 | ``                     |
+| Path                                       | Corresponding flake output        |
+|--------------------------------------------|------------------------------------|
+| `./configurations/{nixos,home}/foo/`      | `{nixos,home}Configurations.foo`  |
+| `./modules/{nixos,home,flake-parts}/foo/` | `{nixos,home,flake}Modules.foo`   |
+| `./overlays/foo.nix`                      | `overlays.foo`                    |
+| `./packages/bar`                          | ``                                |
 
 ### Splitting large modules
 
@@ -64,8 +63,8 @@ Modules that would otherwise grow into a single file of several hundred lines ar
 
 ## How to use
 
-- To add a new host, install it with NixOS Installer or Nix-Darwin, then
-    - Create a new directory in `configurations/{nixos/darwin/home}/hostname` depending on underlying OS.
+- To add a new host, install it with the NixOS Installer, then
+    - Create a new directory in `configurations/{nixos/home}/hostname`.
     - Create or move home-manager configurations to `configuration/home/my-user.nix`
     - Copy the generated `configuration.nix` and `hardware-configuration.nix` to the new directory and create the
       `default.nix`.
@@ -80,7 +79,7 @@ Modules that would otherwise grow into a single file of several hundred lines ar
 - To update NixOS (and other inputs) run `nix flake update`
     - You may also update a subset of inputs, e.g.
       ```sh
-      nix flake lock --update-input nixpkgs --update-input darwin --update-input home-manager
+      nix flake lock --update-input nixpkgs --update-input home-manager
       # Or, `nix run .#update`
       ```
 - To free up disk space,
