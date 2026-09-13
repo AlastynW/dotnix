@@ -8,11 +8,11 @@
     };
 
     "memory" = {
-      format = " {: >3}%";
+      format = " {: >3}%";
     };
 
     "temperature" = {
-      format = "  {temperatureC}°C";
+      format = "  {temperatureC}°C";
       critical-threshold = 80;
     };
 
@@ -20,19 +20,19 @@
       device = "{icon} {percent: >3}%";
       format = "{percent}% {icon}";
       format-icons = [
-        ""
-        ""
+        ""
+        ""
       ];
     };
 
     "battery" = {
       format = "{icon} {capacity: >3}%";
       format-icons = [
-        ""
-        ""
-        ""
-        ""
-        ""
+        ""
+        ""
+        ""
+        ""
+        ""
       ];
       states = {
         warning = 30;
@@ -42,8 +42,8 @@
 
     "network" = {
       format = "⚠  Disabled";
-      format-wifi = "  {essid}";
-      format-ethernet = " {ifname}: {ipaddr}/{cidr}";
+      format-wifi = "  {essid}";
+      format-ethernet = " {ifname}: {ipaddr}/{cidr}";
       format-disconnected = "⚠  Disconnected";
       max-length = 50;
     };
@@ -52,17 +52,17 @@
       scroll-step = 1;
       format = "{icon} {volume: >3}%";
       format-bluetooth = "{icon} {volume: >3}%";
-      format-muted = " muted";
+      format-muted = " muted";
       format-icons = {
-        headphones = "";
-        handsfree = "";
-        headset = "";
-        phone = "";
-        portable = "";
-        car = "";
+        headphones = "";
+        handsfree = "";
+        headset = "";
+        phone = "";
+        portable = "";
+        car = "";
         default = [
-          ""
-          ""
+          ""
+          ""
         ];
       };
       on-click = "pavucontrol";

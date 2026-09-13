@@ -7,8 +7,8 @@
 {
   programs.waybar.settings.mainBar = {
     "clock" = {
-      format = "  {:%d/%m/%Y  %H:%M}";
-      format-alt = "  {:%d/%m/%Y  %H:%M:%S}";
+      format = "  {:%d/%m/%Y  %H:%M}";
+      format-alt = "  {:%d/%m/%Y  %H:%M:%S}";
       interval = 1;
       tooltip-format = "<tt><small>{calendar}</small></tt>";
 
@@ -49,7 +49,7 @@
     };
 
     "hyprland/language" = {
-      format = "  {short}";
+      format = "  {short}";
     };
   };
 }

@@ -15,19 +15,19 @@
       on-scroll-down = "${pkgs.hyprland}/bin/hyprctl dispatch workspace e-1";
       on-click = "activate";
       format-icons = {
-        "1" = "";
-        "2" = "";
-        "3" = "";
-        "4" = "";
-        "5" = "";
+        "1" = "";
+        "2" = "";
+        "3" = "";
+        "4" = "";
+        "5" = "";
         "6" = "6";
         "7" = "7";
         "8" = "8";
         "9" = "9";
         "10" = "10";
-        urgent = "";
-        focused = "";
-        default = "";
+        urgent = "";
+        focused = "";
+        default = "";
       };
     };
 
@@ -37,6 +37,11 @@
       tooltip = false;
       on-click = "";
       output = "all";
+      # cava's audio thread can lose a startup race when two instances
+      # (one per monitor bar) grab the PulseAudio/PipeWire source at the
+      # same time; the exec then exits and waybar never restarts it. Have
+      # waybar respawn the module so it recovers on its own.
+      restart-interval = 2;
     };
 
     "hyprland/submap" = {
@@ -49,7 +54,7 @@
     };
 
     "custom/launcher" = {
-      format = " ";
+      format = " ";
       on-click = "${lib.getExe pkgs.rofi} -modi drun -show drun -show-icons";
       tooltip = false;
     };
