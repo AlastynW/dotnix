@@ -1,13 +1,24 @@
 { ... }:
 let
-  wallpaper = builtins.fetchurl {
-    url = "https://i.redd.it/52bb00rh254d1.jpeg";
-    sha256 = "00bvb43sindbcvbbznv9y2var1xx5qr5yz1iccx7jgalf5w0l56q";
-  };
+  left = ../backgrounds/squeleton.jpg; # eDP-1 (écran interne, à gauche)
+  right = ../backgrounds/pleurs.jpg; # HDMI-A-1 (écran externe, à droite)
 in
 {
+  # Le hyprpaper packagé par nixpkgs 26.05 (v0.8.4) est une réécriture qui a
+  # abandonné la syntaxe `preload`/`wallpaper = mon,chemin` : ces directives
+  # n'existent plus du tout dans le binaire (confirmé en lisant
+  # src/config/ConfigManager.cpp sur github.com/hyprwm/hyprpaper). Sans
+  # erreur ni log, `preload`/`wallpaper` étaient silencieusement ignorées et
+  # hyprpaper démarrait sans fond d'écran ("Monitor X has no target"). La
+  # nouvelle syntaxe est un bloc spécial `wallpaper { }` par moniteur.
   home.file.".config/hypr/hyprpaper.conf".text = ''
-    preload  = ${wallpaper}
-    wallpaper = ,${wallpaper}
+    wallpaper {
+      monitor = eDP-1
+      path = ${left}
+    }
+    wallpaper {
+      monitor = HDMI-A-1
+      path = ${right}
+    }
   '';
 }
